@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>reveal.js - The HTML Presentation Framework</title>
+  <title>Composerとは</title>
 
   <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
   <meta name="author" content="Hakim El Hattab">
@@ -35,247 +35,188 @@
 <!-- Any section element inside of this container is displayed as a slide -->
 <div class="slides">
 
-<section>
-  <h1>スタートHaskell 2</h1>
+<section data-markdown="">
+  # Composer
 
-  <h3>関数型問題解決法</h3>
-  <h5>@dekokun</h5>
+
+  倉知真太郎
 </section>
 
 <section data-markdown>
   ## 自己紹介
-  * @dekokun
-  * Web企業でPHPとかPerlとかNodeとか
-  * 最近Jenkinsが好き
-  * 静的な型付け言語は手慰みにCやJavaをやったこともあるがHaskellがほぼ初めて！
-  * 静的型付け言語、楽しいですね！！！
-  * Haskell製のブログエンジン、Hakyleを使って作ったブログとかあるし見てね！
+  * 倉知 真太郎
+  * システム管理部ベースライブラリグループ
+  * twitter : @dekokun
+  * PHP Lover
+  * Haskell Lover
 </section>
 
 <section data-markdown>
-  ## 逆ポーランド記法電卓
+  ## お仕事
+  * Android,iOSへのPUSH配信システム作成チームの1人
+  * 皆さんPUSH配信しましょう
+  * メール配信システム、PictureFitterも運用してます
 </section>
 
 <section data-markdown>
-  ### 逆ポーランド記法(RPN)とは
-  * こんな感じ
-  * "1 2 +" -> 1 + 2
-  * "1 2 + 10 *" -> (1 + 2) * 10
-  * ()が不要ですね。素敵ですね。
-
+  ### なぜ発表をしようと思ったか
+  1. Composerが便利だと聞いていた
+  1. 個人プロジェクトで使ってみたら便利だった
+  1. 今後外部ライブラリ管理の主流になりそう
+  1. 皆、知識だけでも持っているべきだと思った
 </section>
 
 <section data-markdown>
-  ### 計算方法
-
-  * 左から右に読む
-  * 数だったらスタックに積む
-  * 演算子だったらスタックから数を取り出し演算し、結果をスタックに積む
-  * 最後にスタックに残った数が答え
+  ### この発表内容が役立つのは
+  * Composerが何なのか知らない人
+  * 名前は知ってるけども触ったことがない人
 </section>
 
 <section data-markdown>
-  ## 実際に自分の頭で計算してみる
-  * "10 4 3 + 2 * -"
+  ### この発表の目的は
+  * 参加者がComposerの存在を知ること
+  * 参加者がComposerの概略をつかむこと
 </section>
 
 <section data-markdown>
-  ### まずはスタックに10を積む
-  * "10 4 3 + 2 * -"
-  * スタック:10
+  ### すでによくご存知の方へ
+  * すみません
+  * でも、嬉しい
+  * ツッコミ歓迎
 </section>
 
 <section data-markdown>
-  ### 次のアイテムは4なのでこれも<br>スタックに積む
-  * "4 3 + 2 * -"
-  * スタック:4 10
-</section>
-<section data-markdown>
-  ### 次も3なのでスタックに
-  * "3 + 2 * -"
-  * スタック:3 4 10
+  ### 突然ですが
+  * 外部ライブラリ、使ってますか？
 </section>
 
 <section data-markdown>
-  ### 次は2項演算子なのでスタックから2個取り出して計算し結果をスタックに積む
-  * "+ 2 * -"
-  * 4 + 3 = 7
-  * スタック:7 10
+  ### 車輪の再発明は防ぎたい
+  * Services_Twitter
+  * PHPUnit
 </section>
 
 <section data-markdown>
-  ### 2をスタックに
-  * "2 * -"
-  * スタック:2 7 10
+  ### Composer登場以前
+  * 外部ライブラリの管理方法はたいていPear
+  * こんなことに困ったことはないですか？
+</section>
+
+<section>
+  <ul>
+    <li><small>デプロイ前にすべき外部ライブラリのインストールをせずにデプロイ…</small></li>
+    <li><small>サーバ増設の際に現在使っている外部ライブラリのバージョン調査…</small></li>
+    <li><small>開発メンバが各々PCに勝手に必要ライブラリを入れるため<br>ライブラリのバージョンが揃わない…</small></li>
+    <li><small>あるシステムのためにライブラリのバージョンをあげたら<br>同じサーバで動いていた別のシステムが動かなくなった…</small></li>
+    <li><small>使用ライブラリが増え過ぎてrequire_once地獄…</small></li>
+    <li><small>使用ライブラリのrequire漏れのページが…</small></li>
+    <li><small>外部ライブラリのアップデートが面倒…</small></li>
+  </ul>
 </section>
 
 <section data-markdown>
-  ### 掛け算
-  * "* -"
-  * 7 * 2 = 14
-  * スタック:14 10
-</section>
-<section data-markdown>
-  ### 引きましょう
-  * "-"
-  * 10 - 14 = -4
-  * スタック:4
-</section>
-<section data-markdown>
-  ### なくなった
-  * ""
-  * スタック:4
-
-  お疲れ様です。答えは4です
-</section>
-<section data-markdown>
-  ### RPN関数を作成
-  * まずは型
-  * 文字列をとって数を返す
-  * 倍精度浮動少数で
-          <pre><code contenteditable>
-            solveRPN :: String -> Double
-          </code></pre>
-</section>
-<section data-markdown>
-  ### 自分の頭ではどうやったっけ
-  1. スペース区切りの文字列をリストに分割 -> words
-  1. リストを走査しスタックを更新 -> 畳込み
-  * 今回はリストを左から走査するので左畳込み
-  1. スタックはどう表現するか
-  * リストの先頭をスタックの先頭に
-  * リストはリストの先頭の操作が得意ですので、出入りの激しいスタックの先頭をリストの先頭に対応づけましょう
+  ### ここが問題
+  * ソースコードと一緒に外部ライブラリをGit,SVNなどで管理可能にする仕組み
+  * プロジェクト毎に外部ライブラリのバージョンを固定できる仕組み
+  * require地獄にならない仕組み
+  * ライブラリ間の依存関係の解決ができる仕組み
 </section>
 
 <section data-markdown>
-  ### 関数の一部
-
-          <pre><code>
-            solveRPN :: String -> Double
-            solveRPN expression = head (foldl foldingFunction [] (words expression))
-            where foldingFunction stack item = ....
-          </code></pre>
-
-  * ポイントフリースタイルに向けて書きなおす
-
-          <pre><code>
-            solveRPN expression = head $ foldl foldingFunction [] $ words expression
-            where foldingFunction stack item = ....
-          </code></pre>
-
-  * 更に↓
-
-          <pre><code>
-            solveRPN expression = head . foldl foldingFunction [] $ words expression
-            where foldingFunction stack item = ....
-          </code></pre>
-
-  * 更に↓
-
-          <pre><code>
-            solveRPN = head . foldl foldingFunction [] . words
-            where foldingFunction stack item = ....
-          </code></pre>
-</section>
-<section data-markdown>
-  ### 作ってみよう
-  * 作ったり使ったりしてみよう
-  * 続きはVimで
-</section>
-<section data-markdown>
-  ### 失敗する場合も考えたいですね
-  * 現在は不正な文字列が渡されるとプログラムが落ちる
-  * 14章でMaybeモナドを学ぶと、失敗した際にNothingを返すなど綺麗に失敗させることができるようになりますので早く学びましょう
+  ### こういうのが欲しい
+  * ソースコードと一緒に外部ライブラリをGit,SVNなどで管理可能にする仕組み
+  * プロジェクト毎に外部ライブラリのバージョンを固定できる仕組み
+  * require地獄にならない仕組み
+  * ライブラリ間の依存関係の解決ができる仕組み
 </section>
 
 <section data-markdown>
-  ## ヒースロー空港から<br>ロンドンへ
+  ### Rubyistによる嘲笑
+  * それ、Bundlerでできるよ！
+  * これだからPHPerは…
 </section>
 
 <section data-markdown>
-  * とにかく早くヒースロー空港からロンドンに行きたい
-  * ただしレンタカーで
+  ### 他の言語達による追従
+  * npmでできるよ！(Node.js)
+  * Cartonでできるよ！(Perl)
+  * Cabal(-dev)でできるよ！(Haskell)
 </section>
 
 <section data-markdown>
-  (MacのPreview.appで作りました)
+  ### PHPによる反撃
+  * PHPにはComposerがある！！
+  * それ、Composerでできるよ！
+</section>
 
-  <img src="path.png"/>
+<section data-markdown>
+  ### Composer概説
+  * jsonファイルで外部ライブラリを管理
+  * プロジェクトメンバーでバージョンの共有可能
+  * 外部ライブラリをローカルにインストール
+  * autoloadファイルを1つだけrequireすればよい
+</section>
 
-  上記の図が下記文字列に対応
+<section data-markdown>
+  ### デモ
+</section>
 
-  * 50 10 30 5 90 20 40 2 25 10 8 0
-  * 本当は、改行で区切られてます
+<section>
+  <h3>jsonファイルで<br>外部ライブラリを管理</h3>
+    <pre><code contenteditable>
+{
+  "require": {
+    "phpunit/phpunit": "3.7.*"
+  }
+}
+    </code></pre>
+
+</section>
+
+<section>
+  <h3>requireの仕方</h3>
+  <pre><code contenteditable>
+    require_once APP_HOME . '/vendor/autoload.php';
+  </code></pre>
+  <p>これですべてのライブラリが読み込まれます</p>
 
 </section>
 
 <section data-markdown>
-  ## こんな感じで解く
-  1. 手で解く
-  2. 手で解いた時に使ったデータ構造をHaskellで表現する
-  3. そのデータ構造をどのようにHaskellで操作するか考える
-
-  まぁ、このやり方が常にうまくいくわけではないでしょうが、<br>常に何がしかの手がかりは得られる方法ですよね
+  ### もう一度困りごとを見てみよう
 </section>
 
 <section data-markdown>
-  ## これからは教科書の<br>図を見ましょう
-
-  * Preview.app、疲れた
+  ### デプロイとの絡め方
+  * デプロイのたびにcomposer install
+  * これによりinstall漏れなどがなくなる
+  * テスト環境で動けば本番環境でも動くことが<br>保証される
 </section>
 
 <section data-markdown>
-  ## 求めましょう
-  * A1に行く最短経路とかかる時間
-  * B Cで40分
-  * B1に行く最短経路とかかる時間
-  * Bで10分
+  ### デモ
 </section>
 
 <section data-markdown>
-  ## A1,B1への時間を元に、以下を求めましょう
-  * A2に行く最短経路とかかる時間
-  * A1まで40分 + Aで45分
-  * B2に行く最短経路とかかる時間
-  * A1まで40分 + A Cで65分
+  ### Composerを採用しているプロジェクト
+  * FuelPHP
+  * Symfony
+  * Zend Framework
 </section>
 
 <section data-markdown>
-  ## 以下繰り返し
-
-  (明らかに再帰ですね)
-
-  最後に、A4とB4の所要時間を比べればめでたしめでたし
+  ### 制約
+  * PHP5.3.2以上
+  * 実行サーバにgitが必要
+  * detect_unicodeをoffにする必要あり
 </section>
 
 <section data-markdown>
-  ## 手で解く方法は分かった
+  ### 欠点
+  * デプロイ時の障害点が増える
+  * デプロイに時間がかかる
 
-  * 続きはVimでやりましょう
-  * ghciも交えながら
-  * [toLondon.hs](https://github.com/dekokun/StartHaskell2-Chapter10/blob/master/toLondon.hs)参照
-</section>
-
-<section data-markdown>
-  ## 自分で道路を生成しよう
-
-  * [badMakeRondomPath.hs](https://github.com/dekokun/StartHaskell2-Chapter10/blob/master/badMakeRondomPath.hs)
-  * [makeRandomPath.hs](https://github.com/dekokun/StartHaskell2-Chapter10/blob/master/makeRandomPath.hs)
-
-  #### スタックオーバーフローも起こしてみよう
-</section>
-<section data-markdown>
-  ## 正格評価に
-
-  * foldlをfolol'に
-  * sumをfolol' (+) 0に
-  * [notLazyToLondon.hs](https://github.com/dekokun/StartHaskell2-Chapter10/blob/master/notLazyToLondon.hs)
-</section>
-<section data-markdown>
-  ## 最適化オプションをつけてコンパイル
-
-  $ ghc --make -O
-
+  上記より、vender下は最終的には<br>コミットしてしまったほうがいいかもしれない
 </section>
 </div>
 
