@@ -38,6 +38,7 @@
 <section data-markdown="">
   # Composer
 
+  Pearの不満も解決できる！？<br>ライブラリ管理のお供にComposer！
 
   倉知真太郎
 </section>
@@ -53,9 +54,9 @@
 
 <section data-markdown>
   ## お仕事
-  * Android,iOSへのPUSH配信システム作成チームの1人
+  * Android,iOSへのPUSH配信システム作成中
   * 皆さんPUSH配信しましょう
-  * メール配信システム、PictureFitterも運用してます
+  * メール配信システム、PictureFitterも運用中
 </section>
 
 <section data-markdown>
@@ -67,9 +68,8 @@
 </section>
 
 <section data-markdown>
-  ### この発表内容が役立つのは
-  * Composerが何なのか知らない人
-  * 名前は知ってるけども触ったことがない人
+  ### 想定視聴者
+  * Composerを触ったことがない人
 </section>
 
 <section data-markdown>
@@ -97,35 +97,27 @@
 </section>
 
 <section data-markdown>
-  ### Composer登場以前
+  ### Composer登場以前の<br>外部ライブラリ管理
   * 外部ライブラリの管理方法はたいていPear
   * こんなことに困ったことはないですか？
 </section>
 
 <section>
   <ul>
-    <li><small>デプロイ前にすべき外部ライブラリのインストールをせずにデプロイ…</small></li>
-    <li><small>サーバ増設の際に現在使っている外部ライブラリのバージョン調査…</small></li>
-    <li><small>開発メンバが各々PCに勝手に必要ライブラリを入れるため<br>ライブラリのバージョンが揃わない…</small></li>
-    <li><small>あるシステムのためにライブラリのバージョンをあげたら<br>同じサーバで動いていた別のシステムが動かなくなった…</small></li>
-    <li><small>使用ライブラリが増え過ぎてrequire_once地獄…</small></li>
-    <li><small>使用ライブラリのrequire漏れのページが…</small></li>
-    <li><small>外部ライブラリのアップデートが面倒…</small></li>
+    <small><li>サーバ増設の際に他のサーバと異なるバージョンをインストールしてしまい<br>動かなくなった…</li></small>
+    <small><li>開発メンバが各々PCに勝手に必要ライブラリを入れるため<br>開発メンバ間でライブラリのバージョンが揃わない…</li></small>
+    <small><li>外部ライブラリのアップデート/ダウングレードが面倒…</li></small>
+    <small><li>あるシステムのためにライブラリのバージョンをあげたら<br>同じサーバで動いていた別のシステムが動かなくなった…</li></small>
+    <small><li>使用ライブラリが増え過ぎてrequire_once地獄…</li></small>
+    <small><li>使用ライブラリのrequire漏れのページが…</li></small>
+    <small><li>デプロイ前にすべき外部ライブラリのインストールをせずにデプロイ…</li></small>
   </ul>
-</section>
-
-<section data-markdown>
-  ### ここが問題
-  * ソースコードと一緒に外部ライブラリをGit,SVNなどで管理可能にする仕組み
-  * プロジェクト毎に外部ライブラリのバージョンを固定できる仕組み
-  * require地獄にならない仕組み
-  * ライブラリ間の依存関係の解決ができる仕組み
 </section>
 
 <section data-markdown>
   ### こういうのが欲しい
   * ソースコードと一緒に外部ライブラリをGit,SVNなどで管理可能にする仕組み
-  * プロジェクト毎に外部ライブラリのバージョンを固定できる仕組み
+  * サーバではなくプロジェクトに対して<br>外部ライブラリをインストールする仕組み
   * require地獄にならない仕組み
   * ライブラリ間の依存関係の解決ができる仕組み
 </section>
@@ -150,10 +142,10 @@
 </section>
 
 <section data-markdown>
-  ### Composer概説
+  ### Composerとは
   * jsonファイルで外部ライブラリを管理
   * プロジェクトメンバーでバージョンの共有可能
-  * 外部ライブラリをローカルにインストール
+  * 外部ライブラリをプロジェクトのディレクトリにインストール
   * autoloadファイルを1つだけrequireすればよい
 </section>
 
@@ -166,9 +158,11 @@
     <pre><code contenteditable>
 {
   "require": {
-    "phpunit/phpunit": "3.7.*"
+    "phpunit/phpunit": "3.7.*",
+    "slim/slim": "1.6.*"
   }
 }
+
     </code></pre>
 
 </section>
@@ -178,12 +172,8 @@
   <pre><code contenteditable>
     require_once APP_HOME . '/vendor/autoload.php';
   </code></pre>
-  <p>これですべてのライブラリが読み込まれます</p>
+  <p>これでインストールしたすべてのライブラリが<br>使用可能となります</p>
 
-</section>
-
-<section data-markdown>
-  ### もう一度困りごとを見てみよう
 </section>
 
 <section data-markdown>
@@ -208,7 +198,7 @@
   ### 制約
   * PHP5.3.2以上
   * 実行サーバにgitが必要
-  * detect_unicodeをoffにする必要あり
+  * detect_unicode("きっと将来削除されるでしょう")をoffにする必要あり
 </section>
 
 <section data-markdown>
@@ -217,6 +207,15 @@
   * デプロイに時間がかかる
 
   上記より、vender下は最終的には<br>コミットしてしまったほうがいいかもしれない
+</section>
+
+<section data-markdown>
+  ### 最後に
+  * 利点や欠点を知り楽しいComposerライフを
+</section>
+
+<section data-markdown>
+  ### ありがとうございました
 </section>
 </div>
 
