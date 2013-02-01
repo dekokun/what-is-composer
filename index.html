@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta charset="utf-8">
@@ -38,7 +38,7 @@
 <section data-markdown="">
   # Composer
 
-  Pearの不満も解決できる！？<br>ライブラリ管理のお供にComposer！
+  <br>Pearの不満も解決できる！？<br>ライブラリ管理のお供にComposer！
 
   倉知真太郎
 </section>
@@ -55,8 +55,7 @@
 <section data-markdown>
   ## お仕事
   * Android,iOSへのPUSH配信システム作成中
-  * 皆さんPUSH配信しましょう
-  * メール配信システム、PictureFitterも運用中
+  * メール配信システム、PictureFitter運用中
 </section>
 
 <section data-markdown>
@@ -64,7 +63,6 @@
   1. Composerが便利だと聞いていた
   1. 個人プロジェクトで使ってみたら便利だった
   1. 今後外部ライブラリ管理の主流になりそう
-  1. 皆、知識だけでも持っているべきだと思った
 </section>
 
 <section data-markdown>
@@ -73,59 +71,78 @@
 </section>
 
 <section data-markdown>
-  ### この発表の目的は
+  ### この発表の目的
   * 参加者がComposerの存在を知ること
-  * 参加者がComposerの概略をつかむこと
+  * 参加者がComposerの便利な面を知ること
 </section>
 
 <section data-markdown>
   ### すでによくご存知の方へ
-  * すみません
+  * 知っていることばかりかと思います
+  * ごめんなさい
   * でも、嬉しい
-  * ツッコミ歓迎
+  * ツッコミお願い致します
 </section>
 
 <section data-markdown>
   ### 突然ですが
-  * 外部ライブラリ、使ってますか？
+  * PHPの外部ライブラリ、使ってますか？
 </section>
 
 <section data-markdown>
   ### 車輪の再発明は防ぎたい
   * Services_Twitter
   * PHPUnit
+  * Net_IPv4
 </section>
 
 <section data-markdown>
-  ### Composer登場以前の<br>外部ライブラリ管理
+  ### Composer登場以前の<br>PHPの外部ライブラリ管理
   * 外部ライブラリの管理方法はたいていPear
-  * こんなことに困ったことはないですか？
 </section>
 
-<section>
-  <ul>
-    <small><li>サーバ増設の際に他のサーバと異なるバージョンをインストールしてしまい<br>動かなくなった…</li></small>
-    <small><li>開発メンバが各々PCに勝手に必要ライブラリを入れるため<br>開発メンバ間でライブラリのバージョンが揃わない…</li></small>
-    <small><li>外部ライブラリのアップデート/ダウングレードが面倒…</li></small>
-    <small><li>あるシステムのためにライブラリのバージョンをあげたら<br>同じサーバで動いていた別のシステムが動かなくなった…</li></small>
-    <small><li>使用ライブラリが増え過ぎてrequire_once地獄…</li></small>
-    <small><li>使用ライブラリのrequire漏れのページが…</li></small>
-    <small><li>デプロイ前にすべき外部ライブラリのインストールをせずにデプロイ…</li></small>
-  </ul>
+<section data-markdown>
+こんなことに困ったことはないですか？
 </section>
 
+<section data-markdown>
+### サーバ増設時
+
+* 他のサーバのライブラリと異なるバージョンの<br>ライブラリをインストールしてしまい<br>動かなくなった…
+</section>
+<section data-markdown>
+### 複数メンバーでの開発時
+
+  * 開発メンバが各々PCに勝手に必要ライブラリを<br>入れるため開発メンバ間でライブラリの<br>バージョンが揃わない…
+</section>
+<section data-markdown>
+### ライブラリバージョンアップ時
+* あるシステムのためにライブラリのバージョンを<br>上げたら同じサーバで動いていた別のシステムが<br>動かなくなった…
+</section>
+<section data-markdown>
+### 使用するライブラリ追加時
+* サーバに外部ライブラリを<br>インストールをせずにデプロイ…
+</section>
+<section data-markdown>
+### その他
+* 新しい機能を追加した際に必要ライブラリのrequire漏れのページが…
+</section>
+
+<section data-markdown>
+### これは嬉しくない
+</section>
 <section data-markdown>
   ### こういうのが欲しい
-  * ソースコードと一緒に外部ライブラリをGit,SVNなどで管理可能にする仕組み
+  * ソースコードと一緒に外部ライブラリをGit,SVNなどで管理/共有可能にする仕組み
   * サーバではなくプロジェクトに対して<br>外部ライブラリをインストールする仕組み
-  * require地獄にならない仕組み
+  * requireするのを忘れないような仕組み
   * ライブラリ間の依存関係の解決ができる仕組み
 </section>
 
 <section data-markdown>
   ### Rubyistによる嘲笑
   * それ、Bundlerでできるよ！
-  * これだからPHPerは…
+  * PHPerはまだそんな場所にいるのか…(ｸｽｸｽ
 </section>
 
 <section data-markdown>
@@ -146,7 +163,7 @@
   * jsonファイルで外部ライブラリを管理
   * プロジェクトメンバーでバージョンの共有可能
   * 外部ライブラリをプロジェクトのディレクトリにインストール
-  * autoloadファイルを1つだけrequireすればよい
+  * インストールしたライブラリを使用するには<br>autoloadファイルを1つだけrequireすればよい
 </section>
 
 <section data-markdown>
@@ -168,11 +185,35 @@
 </section>
 
 <section>
-  <h3>requireの仕方</h3>
+    <h3>composer.lockファイルで<br>バージョンを凍結</h3>
+
+<pre><code contenteditable>
+{
+  "name": "phpunit/phpunit",
+  "version": "3.7.13",
+  "source": {
+    "type": "git",
+    "url": "git://github.com/sebastianbergmann/phpunit.git",
+    "reference": "3.7.13"
+  }, ...
+
+</code></pre>
+
+    <ul>
+      <li>composer.lockファイルがある場合、<br>Composerは指定されたバージョンを<br>インストールする</li>
+      <li>このファイルを共有することで<br>プロジェクト間のバージョンの同期が可能</li>
+    </ul>
+
+
+</section>
+<section>
+  <h3>インストールしたライブラリの<br>使い方</h3>
   <pre><code contenteditable>
     require_once APP_HOME . '/vendor/autoload.php';
   </code></pre>
-  <p>これでインストールしたすべてのライブラリが<br>使用可能となります</p>
+    <ul>
+        <li>インストールしたすべてのライブラリが<br>この1行で使用可能となります</li>
+    </ul>
 
 </section>
 
@@ -188,7 +229,7 @@
 </section>
 
 <section data-markdown>
-  ### Composerを採用しているプロジェクト
+  ### Composerを採用している<br>プロジェクト
   * FuelPHP
   * Symfony
   * Zend Framework
@@ -198,7 +239,7 @@
   ### 制約
   * PHP5.3.2以上
   * 実行サーバにgitが必要
-  * detect_unicode("きっと将来削除されるでしょう")をoffにする必要あり
+  * detect_unicode<br>("きっと将来削除されるでしょう"な機能)<br>をoffにする必要あり
 </section>
 
 <section data-markdown>
